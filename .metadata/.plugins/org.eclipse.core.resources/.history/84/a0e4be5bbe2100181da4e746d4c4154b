@@ -1,0 +1,47 @@
+package com.data.collection;
+
+import org.kaaproject.kaa.client.DesktopKaaPlatformContext;
+import org.kaaproject.kaa.client.Kaa;
+import org.kaaproject.kaa.client.KaaClient;
+import org.kaaproject.kaa.client.SimpleKaaClientStateListener;
+import org.kaaproject.kaa.client.configuration.base.ConfigurationListener;
+import org.kaaproject.kaa.client.configuration.base.SimpleConfigurationStorage;
+import org.kaaproject.kaa.client.logging.strategies.RecordCountLogUploadStrategy;
+import org.kaaproject.kaa.schema.sample.DataCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+public class FirstKaaDemo {
+
+	private static final long DEFAULT_START_DELAY = 1000L;
+	 
+    private static final Logger LOG = LoggerFactory.getLogger(FirstKaaDemo.class);
+ 
+    private static KaaClient kaaClient;
+ 
+    private static ScheduledFuture<?> scheduledFuture;
+    private static ScheduledExecutorService scheduledExecutorService;
+	
+	public static void main(String[] args) {
+		
+		LOG.info(FirstKaaDemo.class.getSimpleName() + "App starting!");
+		
+		scheduledExecutorService = Executors.newScheduledThreadPool(1);
+		
+		//Create the Kaa desktop context for the application.
+		DesktopKaaPlatformContext desktopKaaPlatformContext = new DesktopKaaPlatformContext();
+
+		/*
+         * Create a Kaa client and add a listener which displays the Kaa client
+         * configuration as soon as the Kaa client is started.
+         */
+        kaaClient = Kaa.newClient(desktopKaaPlatformContext, new FirstKaaClientStateListener(), true);
+	}
+
+}

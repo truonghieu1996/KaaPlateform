@@ -1,0 +1,107 @@
+package com.data.collection;
+
+import java.io.IOException;
+import java.util.Random;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+import org.kaaproject.kaa.client.DesktopKaaPlatformContext;
+import org.kaaproject.kaa.client.Kaa;
+import org.kaaproject.kaa.client.KaaClient;
+import org.kaaproject.kaa.client.SimpleKaaClientStateListener;
+import org.kaaproject.kaa.client.logging.RecordInfo;
+import org.kaaproject.kaa.client.logging.future.RecordFuture;
+import org.kaaproject.kaa.client.logging.strategies.RecordCountLogUploadStrategy;
+import org.kaaproject.kaa.schema.sample.DataCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+ 
+/**
+ * Class implement functionality for First Kaa application. Application send temperature data
+ * from the Kaa end-point with required configured sampling period
+ */
+public class FirstKaaDemo {
+ 
+    private static final long DEFAULT_START_DELAY = 1000L;
+ 
+    private static final Logger LOG = LoggerFactory.getLogger(FirstKaaDemo.class);
+ 
+    private static KaaClient kaaClient;
+ 
+    private static ScheduledFuture<?> scheduledFuture;
+//    private static ScheduledExecutorService scheduledExecutorService;
+ 
+    public static void main(String[] args) throws InterruptedException {
+        LOG.info(FirstKaaDemo.class.getSimpleName() + " app starting!");
+ 
+//        scheduledExecutorService = Executors.newScheduledThreadPool(1);
+   
+        //Create the Kaa desktop context for the application.
+        DesktopKaaPlatformContext desktopKaaPlatformContext = new DesktopKaaPlatformContext();
+ 
+        /*
+         * Create a Kaa client and add a listener which displays the Kaa client
+         * configuration as soon as the Kaa client is started.
+         */
+        kaaClient = Kaa.newClient(desktopKaaPlatformContext, new FirstKaaClientStateListener(), true);
+ 
+        /*
+         *  Used by log collector on each adding of the new log record in order to check whether to send logs to server.
+         *  Start log upload when there is at least one record in storage.
+         */
+        RecordCountLogUploadStrategy strategy = new RecordCountLogUploadStrategy(1);
+        strategy.setMaxParallelUploads(1);
+        kaaClient.setLogUploadStrategy(strategy);
+  
+        //Start the Kaa client and connect it to the Kaa server.
+        kaaClient.start();
+        
+        for(int i =0; i < 100; i++) {
+        	RecordFuture recordFuture = kaaClient.addLogRecord(new DataCollection(getTemperatureRand()));
+            try {
+    			RecordInfo recordInfo = recordFuture.get(2, TimeUnit.SECONDS);
+    			System.out.println("send in " + 
+    			recordInfo.getRecordDeliveryTimeMs());
+    		} catch (Exception e1) {
+    			e1.printStackTrace();
+    		}
+            Thread.sleep(1000);
+        }
+        
+ 
+        LOG.info("--= Press any key to exit =--");
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            LOG.error("IOException has occurred: {}", e.getMessage());
+        }
+        LOG.info("Stopping...");
+        kaaClient.stop();
+    }
+ 
+    /*
+     * Method, that emulate getting temperature from real sensor.
+     * Retrieves random temperature.
+     */
+    private static int getTemperatureRand() {
+        return new Random().nextInt(10) + 25;
+    }
+ 
+    private static class FirstKaaClientStateListener extends SimpleKaaClientStateListener {
+ 
+        @Override
+        public void onStarted() {
+            super.onStarted();
+            LOG.info("Kaa client started");
+//            Configuration configuration = kaaClient.getConfiguration();
+//            LOG.info("Default sample period: {}", configuration.getSamplePeriod());
+//            onKaaStarted(TimeUnit.SECONDS.toMillis(configuration.getSamplePeriod()));
+        }
+ 
+        @Override
+        public void onStopped() {
+            super.onStopped();
+            LOG.info("Kaa client stopped");
+        }
+    }
+}
