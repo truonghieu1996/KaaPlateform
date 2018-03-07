@@ -2,7 +2,6 @@ package com.data.collection;
 
 import java.io.IOException;
 import java.util.Random;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.kaaproject.kaa.client.DesktopKaaPlatformContext;
@@ -50,8 +49,7 @@ public class FirstKaaDemo {
   
         //Start the Kaa client and connect it to the Kaa server.
         kaaClient.start();
-        
-        for(int i =0; i < 100; i++) {
+//        for(int i =0; i < 100; i++) {
         	RecordFuture recordFuture = kaaClient.addLogRecord(new DataCollection(getTemperatureRand()));
             try {
     			RecordInfo recordInfo = recordFuture.get(2, TimeUnit.SECONDS);
@@ -60,9 +58,9 @@ public class FirstKaaDemo {
     		} catch (Exception e1) {
     			e1.printStackTrace();
     		}
-            Thread.sleep(1000);
-        }
-        
+//            Thread.sleep(1000);
+//        }
+//        
  
         LOG.info("--= Press any key to exit =--");
         try {
