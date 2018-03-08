@@ -15,65 +15,81 @@ import org.kaaproject.kaa.schema.example.Notification;
 
 public class NotificationDemo {
 
-	//private static final Logger LOG = LoggerFactory.getLogger(NotificationDemo.class);
+	// private static final Logger LOG =
+	// LoggerFactory.getLogger(NotificationDemo.class);
 	private static List<Topic> topics;
 	private static KaaClient kaaClient;
-	
-	public static void main(String[] args) {	
+
+	public static void main(String[] args) {
+
 		kaaClient = Kaa.newClient(new DesktopKaaPlatformContext(), new SimpleKaaClientStateListener(), true);
-		kaaClient.addNotificationListener(new NotificationListener() {	
+		kaaClient.addNotificationListener(new NotificationListener() {
 			@Override
 			public void onNotification(long topicId, Notification notification) {
-				System.out.println("Recived a notification of all: "+ notification.toString() + "with topic id: "+ topicId);
+				System.out.println(
+						"Recived a notification of all: " + notification.toString() + "with topic id: " + topicId);
 			}
 		});
+
 		kaaClient.start();
+
 		topics = kaaClient.getTopics();
+
 		showTopics();
+
 		subscribeTopics(topics.get(2).getId());
+
+		unsubscribeOptionalTopic(topics.get(0).getId());
 	}
-	
+
 	private static void showTopics() {
-		
-		if(topics == null || topics.isEmpty()) {
+
+		if (topics == null || topics.isEmpty()) {
 			System.out.println("Topic list is empty!");
 			return;
 		}
-		
+
 		System.out.println("Available topics: ");
 		for (Topic topic : topics) {
-			System.out.println("Id: "+ topic.getId() + " name: "+ topic.getName()+" type: "+
-					topic.getSubscriptionType());
+			System.out.println(
+					"Id: " + topic.getId() + " name: " + topic.getName() + " type: " + topic.getSubscriptionType());
 		}
-		
+
 		System.out.println("Subcribed topics: ");
-		for(Topic topic:  getTypeOneTopics(SubscriptionType.MANDATORY_SUBSCRIPTION)) {
-			System.out.println("Id: "+ topic.getId() + " name: "+ topic.getName()+" type: "+
-					topic.getSubscriptionType());
+		for (Topic topic : getTypeOneTopics(SubscriptionType.MANDATORY_SUBSCRIPTION)) {
+			System.out.println(
+					"Id: " + topic.getId() + " name: " + topic.getName() + " type: " + topic.getSubscriptionType());
 		}
-		
+
 		System.out.println("Unsubcribed topics: ");
-		for(Topic topic:  getTypeOneTopics(SubscriptionType.OPTIONAL_SUBSCRIPTION)) {
-			System.out.println("Id: "+ topic.getId() + " name: "+ topic.getName()+" type: "+
-					topic.getSubscriptionType());
+		for (Topic topic : getTypeOneTopics(SubscriptionType.OPTIONAL_SUBSCRIPTION)) {
+			System.out.println(
+					"Id: " + topic.getId() + " name: " + topic.getName() + " type: " + topic.getSubscriptionType());
 		}
 	}
-	
+
 	private static List<Topic> getTypeOneTopics(SubscriptionType type) {
 		List<Topic> res = new ArrayList<>();
-		for(Topic topic : NotificationDemo.topics) {
-			if(topic.getSubscriptionType() == type) {
+		for (Topic topic : NotificationDemo.topics) {
+			if (topic.getSubscriptionType() == type) {
 				res.add(topic);
-			}	
+			}
 		}
 		return res;
 	}
-	
+
 	private static void subscribeTopics(long topicId) {
 		try {
 			kaaClient.subscribeToTopic(topicId);
 		} catch (UnavailableTopicException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void unsubscribeOptionalTopic(long topicId) {
+		try {
+			kaaClient.unsubscribeFromTopic(topicId);
+		} catch (UnavailableTopicException e) {
 			e.printStackTrace();
 		}
 	}
