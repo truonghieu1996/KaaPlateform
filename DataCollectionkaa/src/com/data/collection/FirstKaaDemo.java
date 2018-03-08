@@ -3,7 +3,6 @@ package com.data.collection;
 import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
 import org.kaaproject.kaa.client.DesktopKaaPlatformContext;
 import org.kaaproject.kaa.client.Kaa;
 import org.kaaproject.kaa.client.KaaClient;
@@ -24,7 +23,6 @@ public class FirstKaaDemo {
     private static final Logger LOG = LoggerFactory.getLogger(FirstKaaDemo.class);
  
     private static KaaClient kaaClient;
- 
     public static void main(String[] args) throws InterruptedException {
         LOG.info(FirstKaaDemo.class.getSimpleName() + " app starting!");
  
@@ -50,17 +48,19 @@ public class FirstKaaDemo {
         //Start the Kaa client and connect it to the Kaa server.
         kaaClient.start();
 //        for(int i =0; i < 100; i++) {
-        	RecordFuture recordFuture = kaaClient.addLogRecord(new DataCollection(getTemperatureRand()));
+        	int value = FirstKaaDemo.getTemperatureRand();
+        	RecordFuture recordFuture = kaaClient.addLogRecord(new DataCollection(value));
             try {
     			RecordInfo recordInfo = recordFuture.get(2, TimeUnit.SECONDS);
     			System.out.println("send in " + 
     			recordInfo.getRecordDeliveryTimeMs());
+    			System.out.println("Add into database with value : " +value);
     		} catch (Exception e1) {
     			e1.printStackTrace();
     		}
 //            Thread.sleep(1000);
 //        }
-//        
+       
  
         LOG.info("--= Press any key to exit =--");
         try {

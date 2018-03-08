@@ -1,2 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.util.concurrent.ScheduledFuture"/>
+<fullyQualifiedTypeName name="java.util.concurrent.ScheduledExecutorService"/>
+<fullyQualifiedTypeName name="java.util.concurrent.Executor"/>
+<fullyQualifiedTypeName name="java.util.concurrent.Executors"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.schema.base.Configuration"/>
+<fullyQualifiedTypeName name="java.util.concurrent.TimeUnit"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.schema.sample.DataCollection"/>
+<fullyQualifiedTypeName name="com.configuration.demo.ConfigurationDemo"/>
+<fullyQualifiedTypeName name="java.lang.Override"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.client.configuration.base.SimpleConfigurationStorage"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.schema.sample.Configuration"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.client.configuration.base.ConfigurationListener"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="java.io.InputStreamReader"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="com.data.collection.FirstKaaDemo"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="org.slf4j.LoggerFactory"/>
+<fullyQualifiedTypeName name="com.notification.demo.NotificationDemo"/>
+<fullyQualifiedTypeName name="org.slf4j.Logger"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.common.endpoint.gen.Topic"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.client.KaaClient"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.client.Kaa"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.client.SimpleKaaClientStateListener"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.client.DesktopKaaPlatformContext"/>
+<fullyQualifiedTypeName name="org.kaaproject.kaa.client.notification.NotificationTopicListListener"/>
+</qualifiedTypeNameHistroy>
